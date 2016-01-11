@@ -7,13 +7,13 @@ cross-tabulated text files into a Microsoft SQL Server ODM Blank Database
 
 ### Data provided by Craig Miller and Dave Cole at Utah Division of Water Resources      
 
-* 1. Monthly (547 MonthlyStations or text files)   
-* 2. Daily (51 MonthlyStations or text files)  
+* 1. Monthly (547 MonthlyStations or text files)   (flow cubic foot per second cfs)
+* 2. Daily (51 MonthlyStations or text files)  Volume (acre feet)
 
  Written and tested by Adel Abdallah   
  Started on June 15 2015   
- Finsihed on December 7th 2015   
- estimated time spent: 70 hours of work   
+ Finsihed on Jan 10th 2016   
+ estimated time spent: 80 hours of work   
 
 ### There are two seprate scripts for discharge time series data.   
 Daily   
@@ -36,4 +36,17 @@ changes upstream because we just don't have enough accuracy in our data
 We would also like to have a way of accessing data from different sources    
 through one data hub.  We want to be able to standardize how we keep our data.  
 We also would like to be able to query our data for quick analysi."    
+
+### How to use the database?  
+First, attach the database instance you can download here to Microsoft SQL Server. Here is instructions on how to do it 
+
+Then, you can use ODM Tools software to query and visualize the database   
+There are two versions of this software: C# or Python Based. But both are free. The Python one is more recent and should be compatiable with Mac, Windows, and Lunix. 
+
+Windows C# ODM Tools    
+https://hydroserver.codeplex.com/wikipage?title=ODM%20Tools&referringTitle=Documentation
+
+Python ODM Tools    
+https://github.com/ODM2/ODMToolsPython
+
 
