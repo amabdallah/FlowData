@@ -38,13 +38,50 @@
 % through one data hub.  We want to be able to standardize how we keep our data.
 % We also would like to be able to query our data for quick analysi."  
 %
+%% 1. Read and prepare needed metadata: Variables, Sources, Methods, and Sites form Excel
+path(path,'C:\AdelAbdallah\01PhD\UDWRes\ProcessedData\Metadata')
+
+% Variables 
+[num,txt,Variables] = xlsread('Variables','Variables');
+ % avoid the headlines  
+Variables=Variables(2:end,:);% avoid the first row: headline 
+
+% Sources 
+[num,txt,Sources] = xlsread('Sources','Sources');
+ % avoid the headlines  
+Sources=Sources(2:end,:);% avoid the first row: headline 
+
+% Methods 
+[num,txt,Methods] = xlsread('Methods','Methods');
+ % avoid the headlines  
+Methods=Methods(2:end,:);% avoid the first row: headline 
+%% 2. Load metadata 
+% Methods 
+    
+conn = database('OD','sa','Adel2010',...
+                'Vendor','Microsoft SQL Server','Server','localhost',...
+                'AuthType','Server','PortNumber',52158);
+    
+fastinsert(conn,'Methods',{'MethodDescription','MethodLink'},Methods)
+
+% Add a new controlled vocabulary variable term called "Storage/delivered volume"
+fastinsert(conn,'VariableNameCV',{'Term','Definition'},{'Storage/delivered volume','Storage/delivered volume'})
+
+fastinsert(conn,'Variables',{'VariableCode','VariableName','Speciation','VariableUnitsID',...
+    'SampleMedium','ValueType','IsRegular','TimeSupport','TimeUnitsID','DataType',...
+    'GeneralCategory','NoDataValue'},Variables(:,:))
+
+fastinsert(conn,'Sources',{'Organization','SourceDescription','SourceLink',...
+    'ContactName','Phone','Email','Address','City','State','ZipCode','Citation','MetadataID'},Sources)
+
 %% First: Daily
 % Read daily discharge data values from 51 text files and load them to an ODM Microsfot SQL Server database
 %% 1. Import data from 51 text file to Matlab workspace
 
 clear all, clc;% clear workspace and clean memory from previos work
 
-path(path,'C:\AdelAbdallah\UDWRes\ProcessedData\Daily') % go to data folder
+
+path(path,'C:\AdelAbdallah\01PhD\UDWRes\ProcessedData\Daily')% go to data folder
 
 list=dir(pwd);  %get info of files/folders in current directory
 isfile=~[list.isdir]; %determine index of files vs folders
@@ -285,22 +322,10 @@ MatrixTimeSereisFiles{2,fls} = cat(1,TimeSereis{:});
 % clear icol
 % clear x
 % clear exponent
-%% 3. Read and prepare needed metadata: Variables, Sources, Methods, and Sites form Excel
-% Variables 
-[num,txt,Variables] = xlsread('Variables','Variables');
- % avoid the headlines  
-Variables=Variables(2:end,:);% avoid the first row: headline 
-
-% Sources 
-[num,txt,Sources] = xlsread('Sources','Sources');
- % avoid the headlines  
-Sources=Sources(2:end,:);% avoid the first row: headline 
-
-% Methods 
-[num,txt,Methods] = xlsread('Methods','Methods');
- % avoid the headlines  
-Methods=Methods(2:end,:);% avoid the first row: headline 
-
+%% 3. Load Sites
+conn = database('OD','sa','Adel2010',...
+                'Vendor','Microsoft SQL Server','Server','localhost',...
+                'AuthType','Server','PortNumber',52158);    
 % % Sites
 % prepare attributes for the Sites table 
 B=num2cell(repmat(NaN,length(DailyODMTimeSeriesMatrix),1));
@@ -316,22 +341,6 @@ Sites={DailyODMTimeSeriesMatrix(:,1),DailyODMTimeSeriesMatrix(:,2),lat,long,Dat,
     B,B,B,B,B,B,B,B,DailyODMTimeSeriesMatrix(:,3)};
 
 Sites2=horzcat(Sites{:});
-%% 4. Load metadata 
-% Methods 
-    
-conn = database('OD','sa','Adel2010',...
-                'Vendor','Microsoft SQL Server','Server','localhost',...
-                'AuthType','Server','PortNumber',52158);
-    
-fastinsert(conn,'Methods',{'MethodDescription','MethodLink'},Methods)
-
-
-fastinsert(conn,'Variables',{'VariableCode','VariableName','Speciation','VariableUnitsID',...
-    'SampleMedium','ValueType','IsRegular','TimeSupport','TimeUnitsID','DataType',...
-    'GeneralCategory','NoDataValue'},Variables)
-
-fastinsert(conn,'Sources',{'Organization','SourceDescription','SourceLink',...
-    'ContactName','Phone','Email','Address','City','State','ZipCode','Citation','MetadataID'},Sources)
 
 
 fastinsert(conn,'Sites',{'SiteCode','SiteName','Latitude','Longitude',...
@@ -349,21 +358,38 @@ fastinsert(conn,'Sites',{'SiteCode','SiteName','Latitude','Longitude',...
 
 for fls=1:length(DailyFilesData);
      
-x=ODMTimeSeriesMatrix(fls,4)  ;  
+x=DailyODMTimeSeriesMatrix(fls,4)  ;  
 new_data = cat(1, x{:});
 
 DataValue=new_data(:,2);
 ValueAccuracy=num2cell(repmat(NaN,1,length(DataValue)))';
 LocalDateTime=new_data(:,1);
 UTCOffset=num2cell(repmat(0,1,length(DataValue)))';
+
+% this part is not finished.....just an idea
+% The site ID should be looked up based on either the site code
+% Pass the array of site code and get back the site IDs
+% Sites2(:,1)
+% sqlquery = 'select SiteID* from OD';
+% curs = exec(connPostgres2015,sqlquery)
+% curs = fetch(curs);
+% x=curs.Data(end,1)
+
 SiteID=num2cell(repmat(fls,1,length(DataValue)))';
+
+
 DateTimeUTC=LocalDateTime;
-VariableID=num2cell(repmat(42,1,length(DataValue)))';
+% VaribleID=1 for discharge, average?, day, cubic food per second (cfs)  
+VariableID=num2cell(repmat(1,1,length(DataValue)))';
 OffsetValue=num2cell(repmat(NaN,1,length(DataValue)))';
 OffsetTypeID=num2cell(repmat(NaN,1,length(DataValue)))';
 CensorCode=(repmat({'nc'},1,length(DataValue)))';
 QualifierID=num2cell(repmat(NaN,1,length(DataValue)))';
-MethodID=num2cell(repmat(26,1,length(DataValue)))';
+
+% Method ID= 2 for UDWR: Derived discharge data from different sources. Contact Graig Miller and Dave Cole for details 
+MethodID=num2cell(repmat(2,1,length(DataValue)))';
+
+% Source ID=6 for the source of Utah Division of Water Resources/State Agency/Craig Miller   
 SourceID=num2cell(repmat(6,1,length(DataValue)))';
 SampleID=num2cell(repmat(NaN,1,length(DataValue)))';
 DerivedFromID=num2cell(repmat(NaN,1,length(DataValue)))';
@@ -375,6 +401,13 @@ OffsetTypeID,CensorCode,QualifierID,MethodID,...
 SourceID,SampleID,DerivedFromID,...
 QualityControlLevelID];
 
+end
+%%
+conn = database('OD','sa','Adel2010',...
+                'Vendor','Microsoft SQL Server','Server','localhost',...
+                'AuthType','Server','PortNumber',52158);
+    
+for fls=46:length(DailyFilesData);
 
 fastinsert(conn,'DataValues',{'DataValue','ValueAccuracy','LocalDateTime','UTCOffset',...
 'DateTimeUTC','SiteID','VariableID','OffsetValue',...
@@ -384,11 +417,21 @@ DataValues{fls})
 
 end
 
+
+ 
+% Error using database/fastinsert (line 287)
+% Java exception occurred:
+% java.sql.BatchUpdateException: Violation of UNIQUE KEY constraint 'UNIQUE_DataValues'. Cannot insert duplicate key
+% in object 'dbo.DataValues'. The duplicate key value is (0, <NULL>, Dec  1 1992 12:00AM, 0, Dec  1 1992 12:00AM,
+% 34, 42, <NULL>, <NULL>, nc, <NULL>, 26, 6, <NULL>, <NULL>, 0).
+% 
+% 	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.executeBatch(SQLServerPreparedStatement.java:1178)
+
 %% Second: Monthly/Annual
 % Read monthly discharge data values from Text files and load them to an ODM Microsfot SQL Server database
 %% 1. Import data from 547 text file to Matlab workspace
 clear all, clc;
-path(path,'C:\AdelAbdallah\UDWRes\ProcessedData\Monthly') % go to data folder
+path(path,'C:\AdelAbdallah\01PhD\UDWRes\ProcessedData\Monthly') % go to data folder
 
 list=dir(pwd);  %get info of files/folders in current directory
 isfile=~[list.isdir]; %determine index of files vs folders
@@ -472,25 +515,27 @@ MonthlyFilesData{fls} = cell2mat(raw);
 endRow2 = 1;
 
 formatSpec = '%8s%50s%[^\n\r]';
+formatSpec2 = '%1s%50s%[^\n\r]';
 
 fileID2 = fopen(filename,'r');
 
 dataArray = textscan(fileID2, formatSpec, endRow2, 'Delimiter', '', 'WhiteSpace', '', 'ReturnOnError', false);
-
 
 dataArray{1} = strtrim(dataArray{1});
 dataArray{2} = strtrim(dataArray{2});
 
 % Allocate imported array to column variable names
 VarName1 = dataArray{:, 1};
+
 VarName2 = dataArray{:, 2};
+
 fclose(fileID2);
 
 Station = [dataArray{1:end-1}];
+
 clearvars  endRow formatSpec fileID dataArray ans;
 
 MonthlyStations{fls}=Station;
-
 
 % Clear temporary variables
 clearvars  formatSpec fileID dataArray ans raw col numericData rawData row regexstr result numbers invalidThousandsSeparator thousandsRegExp me R startRow list isfile ;
@@ -576,9 +621,6 @@ DateValues=[Date,Values];
 Monthly22{fls}=DateValues;
 
 %-----------------------------
-
-
-%-----------------------------
 % find the vector of the Annual steamflow values 
 Annual=m(:,16);
 % find the vector of the years  
@@ -595,25 +637,31 @@ clear DateValuesMonthly DateValues Date ym Tm m % its important to clear "DateVa
 %-----------------------------
 
 end
+
 MonthlyFileNames{fls};
+
 MonthlyStationNames=vertcat(MonthlyStations{:});
+
+% Merge the site name the site code to make a uniqe site name 
+MonthlyStationNamesUnq=strcat(MonthlyFileNames,MonthlyStationNames(:,2))
+
 
 % Monthly Data
 ODMMonthlyTimeSeries=transpose(Monthly22);
 
-% Replace empty cells with "Unknown"
-MonthlyStationNamesCode=MonthlyStationNames(:,1);
-emptyCellsCode= cellfun(@isempty,MonthlyStationNamesCode); 
-MonthlyStationNamesCode(emptyCellsCode)=num2cell(rand(1));
+% % Replace empty cells with "Unknown"
+% MonthlyStationNamesCode=MonthlyStationNames(:,1);
+% emptyCellsCode= cellfun(@isempty,MonthlyStationNamesCode); 
+% MonthlyStationNamesCode(emptyCellsCode)=num2cell(rand(1));
+% 
+% % Replace empty cells with "Unknown"
+% MonthlyStationNamesName=MonthlyStationNames(:,2);
+% emptyCellsName = cellfun(@isempty,MonthlyStationNamesName); 
+% MonthlyStationNamesName(emptyCellsName)=num2cell(rand(1));
 
-% Replace empty cells with "Unknown"
-MonthlyStationNamesName=MonthlyStationNames(:,2);
-emptyCellsName = cellfun(@isempty,MonthlyStationNamesName); 
-MonthlyStationNamesName(emptyCellsName)=num2cell(rand(1));
+% MonthlyStationNames1=[MonthlyStationNamesCode,MonthlyStationNamesName];
 
-MonthlyStationNames1=[MonthlyStationNamesCode,MonthlyStationNamesName];
-
-ODMTimeSeriesMonthlyMatrix=[MonthlyStationNames1,MonthlyFileNames,ODMMonthlyTimeSeries];
+ODMTimeSeriesMonthlyMatrix=[MonthlyFileNames,MonthlyStationNamesUnq,ODMMonthlyTimeSeries];
 % Column headings in the ODMTimeSeriesMonthlyMatrix Array
 % Column#1 is for the Site Name 
 % Column#2 is for the Site code 
@@ -622,17 +670,15 @@ ODMTimeSeriesMonthlyMatrix=[MonthlyStationNames1,MonthlyFileNames,ODMMonthlyTime
 
 % Annual Data (derived average monthlty)
 ODMAnnualTimeSeries=transpose(Annual22)
-ODMTimeSeriesAnnualMatrix=[MonthlyStationNames1,MonthlyFileNames,ODMAnnualTimeSeries]
+ODMTimeSeriesAnnualMatrix=[MonthlyFileNames,MonthlyStationNamesUnq,ODMAnnualTimeSeries]
 
 % Column headings in the ODMTimeSeriesAnnualMatrix Array
 % Column#1 is for the Site Name 
 % Column#2 is for the Site code 
 % Column#3 is for the Site file name
 % Column#4 is for the matrix of data values 
-%% 3. Read and prepare needed metadata: (Sites) form Excel
-
+%% 3. Read and prepare needed metadata: (Sites) 
 % Methods, Sources, Variables are already defined and loaded in the previos First step above 
-
 % Sites (the same site has Monthly and Annual)
 
 % prepare attributes for the Sites table 
@@ -646,14 +692,13 @@ long=num2cell(repmat(-111.946402,1,length(ODMTimeSeriesMonthlyMatrix)))';
 
 Dat=num2cell(repmat(0,1,length(ODMTimeSeriesMonthlyMatrix)))';
 
-% double check on the attributes and right matrix coluim here match with
-% ODM
+% 
 SitesMonthly={ODMTimeSeriesMonthlyMatrix(:,1),ODMTimeSeriesMonthlyMatrix(:,2),lat,long,Dat,...
-    B,B,B,B,B,B,B,B,ODMTimeSeriesMonthlyMatrix(:,3)};
+   B,B,B,B,B,B,B,B,B};
 
 SitesMonthly2=horzcat(SitesMonthly{:});
-%% 4. Load Sites metadata (sites)
-% Methods 
+%% 4. Load Sites  
+
 
 % connect Matlab workspace with the SQL Server ODM blank Database 
 conn = database('OD','sa','Adel2010',...
@@ -661,20 +706,35 @@ conn = database('OD','sa','Adel2010',...
                 'AuthType','Server','PortNumber',52158);
     
 
-
 fastinsert(conn,'Sites',{'SiteCode','SiteName','Latitude','Longitude',...
     'LatLongDatumID','Elevation_m',...
 'VerticalDatum','LocalX','LocalY','LocalProjectionID',...
-'PosAccuracy_m','State','County','Comments'},SitesMonthly2(:,:))
+'PosAccuracy_m','State','County','Comments'},SitesMonthly2(:,:));
+
+% % % Check dublicate site Names  
+% A=SitesMonthly2(:,2);
+% [~,idx]=unique(strcat(A(:,1)) );
+% withoutduplicates=A(idx,:);
+% 
+%  % % Check dublicate site codes  
+% BB=SitesMonthly2(:,1);
+% [~,idxCode]=unique(strcat(BB(:,1)) );
+% withoutduplicatesCode=BB(idxCode,:);
+
 %% 5.1 Load Monthly Data Values into ODM Database  
 % for loop over the sites: get the site name, get the corresponding forien
 % key, create a vector of forign keys for its lenght. Insert Data Values
 % for the site. Always the same unit, method, source, and variable. Just
 % adjust the lengh of their vector of forighn keys 
 
+% This site 09183500 reads years before the 1910 with wired format
+% I had to delete them manulaly
+% this one too 094052SM.MON
+% this site too 10241430.mon
+
 for fls=1:length(MonthlyFilesData);
      
-x=ODMTimeSeriesMonthlyMatrix(fls,4) ;  
+x=ODMTimeSeriesMonthlyMatrix(fls,3) ;  
 new_data = cat(1, x{:});
 
 % remove empty values (Null) because ODM doesnt allows empty data values
@@ -687,19 +747,21 @@ end
 new_data(any(cellfun(@isempty,new_data),2),:) = []; %delete row with any empty cells
 
 
-
 DataValue=new_data(:,2);
 ValueAccuracy=num2cell(repmat(NaN,1,length(DataValue)))';
 LocalDateTime=new_data(:,1);
 UTCOffset=num2cell(repmat(0,1,length(DataValue)))';
-SiteID=num2cell(repmat(fls,1,length(DataValue)))';
+SiteID=num2cell(repmat(fls+51,1,length(DataValue)))'; % 51 are previous daily sites
 DateTimeUTC=LocalDateTime;
-VariableID=num2cell(repmat(42,1,length(DataValue)))';
+% Varible ID= 2 for Storage/delivered volume, cumulitve (total), month, acre-ft unit  
+VariableID=num2cell(repmat(2,1,length(DataValue)))';
 OffsetValue=num2cell(repmat(NaN,1,length(DataValue)))';
 OffsetTypeID=num2cell(repmat(NaN,1,length(DataValue)))';
 CensorCode=(repmat({'nc'},1,length(DataValue)))';
 QualifierID=num2cell(repmat(NaN,1,length(DataValue)))';
-MethodID=num2cell(repmat(26,1,length(DataValue)))';
+% Method ID= 2 for UDWR: Derived discharge data from different sources. Contact Graig Miller and Dave Cole for details 
+MethodID=num2cell(repmat(2,1,length(DataValue)))';
+% Source ID=6 for the source of Utah Division of Water Resources/State Agency/Craig Miller   
 SourceID=num2cell(repmat(6,1,length(DataValue)))';
 SampleID=num2cell(repmat(NaN,1,length(DataValue)))';
 DerivedFromID=num2cell(repmat(NaN,1,length(DataValue)))';
@@ -712,12 +774,15 @@ SourceID,SampleID,DerivedFromID,...
 QualityControlLevelID];
 
 
+
+end
+%%
+for fls=90:length(MonthlyFilesData);
 fastinsert(conn,'DataValues',{'DataValue','ValueAccuracy','LocalDateTime','UTCOffset',...
 'DateTimeUTC','SiteID','VariableID','OffsetValue',...
 'OffsetTypeID','CensorCode','QualifierID','MethodID',...
 'SourceID','SampleID','DerivedFromID','QualityControlLevelID'},...
 DataValues{fls})
-
 end
 %% 5.2 Load Annual Data Values into ODM Database  
 % for loop over the sites: get the site name, get the corresponding forien
@@ -725,40 +790,73 @@ end
 % for the site. Always the same unit, method, source, and variable. Just
 % adjust the lengh of their vector of forighn keys 
 
-
-for fls=1:length(MonthlyFilesData);
+for flsAnnual=1:length(MonthlyFilesData);
      
-x=ODMTimeSeriesAnnualMatrix(fls,4)  ;  
-new_data = cat(1, x{:});
-
-DataValue=new_data(:,2);
-ValueAccuracy=num2cell(repmat(NaN,1,length(DataValue)))';
-LocalDateTime=new_data(:,1);
-UTCOffset=num2cell(repmat(0,1,length(DataValue)))';
-SiteID=num2cell(repmat(fls,1,length(DataValue)))';
-DateTimeUTC=LocalDateTime;
-VariableID=num2cell(repmat(42,1,length(DataValue)))';
-OffsetValue=num2cell(repmat(NaN,1,length(DataValue)))';
-OffsetTypeID=num2cell(repmat(NaN,1,length(DataValue)))';
-CensorCode=(repmat({'nc'},1,length(DataValue)))';
-QualifierID=num2cell(repmat(NaN,1,length(DataValue)))';
-MethodID=num2cell(repmat(26,1,length(DataValue)))';
-SourceID=num2cell(repmat(6,1,length(DataValue)))';
-SampleID=num2cell(repmat(NaN,1,length(DataValue)))';
-DerivedFromID=num2cell(repmat(NaN,1,length(DataValue)))';
-QualityControlLevelID=num2cell(repmat(0,1,length(DataValue)))';
-
-DataValues{fls}=[DataValue,ValueAccuracy,LocalDateTime,UTCOffset,...
-DateTimeUTC,SiteID,VariableID,OffsetValue,...
-OffsetTypeID,CensorCode,QualifierID,MethodID,...
-SourceID,SampleID,DerivedFromID,...
-QualityControlLevelID];
+xAnnual=ODMTimeSeriesAnnualMatrix(flsAnnual,3) ;  
+new_dataAnnual = cat(1, xAnnual{:});
+new_dataAnnual = num2cell(new_dataAnnual);
 
 
+% remove empty values (Null) because ODM doesnt allows empty data values
+for kAnnual = 1:numel(new_dataAnnual);
+  if isnan(new_dataAnnual{kAnnual});
+    new_dataAnnual{kAnnual} = [];
+  end
+end
+
+%remove empty cell array contents
+new_dataAnnual(any(cellfun(@isempty,new_dataAnnual),2),:) = []; %delete row with any empty cells
+
+
+DataValueAnn=new_dataAnnual(:,2);
+ValueAccuracyAnn=num2cell(repmat(NaN,1,length(DataValueAnn)))';
+
+LocalDateTimeAnn=cell2mat(new_dataAnnual(:,1)); % convert the cell to double 
+% because the date functon to conver the year 1999 to 1/1/1999 works only
+% with Double
+LocalDateTimeAnn=cellstr(datestr(datenum(LocalDateTimeAnn,1,1)));
+
+
+UTCOffsetAnn=num2cell(repmat(0,1,length(DataValueAnn)))';
+SiteIDAnn=num2cell(repmat(flsAnnual+51,1,length(DataValueAnn)))';
+DateTimeUTCAnn=LocalDateTimeAnn;
+
+% Varible ID =3 for Storage/delivered volume, cumulitve (total), year, acre-ft unit  
+VariableIDAnn=num2cell(repmat(3,1,length(DataValueAnn)))';
+
+OffsetValueAnn=num2cell(repmat(NaN,1,length(DataValueAnn)))';
+OffsetTypeIDAnn=num2cell(repmat(NaN,1,length(DataValueAnn)))';
+CensorCodeAnn=(repmat({'nc'},1,length(DataValueAnn)))';
+QualifierIDAnn=num2cell(repmat(NaN,1,length(DataValueAnn)))';
+
+% Method ID= 3 for UDWR: Derived volume data from different sources. Contact Graig Miller and Dave Cole for details 
+MethodIDAnn=num2cell(repmat(3,1,length(DataValueAnn)))';
+
+% Source ID=6 for the source of Utah Division of Water Resources/State Agency/Craig Miller   
+SourceIDAnn=num2cell(repmat(6,1,length(DataValueAnn)))';
+SampleIDAnn=num2cell(repmat(NaN,1,length(DataValueAnn)))';
+DerivedFromIDAnn=num2cell(repmat(NaN,1,length(DataValueAnn)))';
+QualityControlLevelIDAnn=num2cell(repmat(0,1,length(DataValueAnn)))';
+
+DataValuesAnn{flsAnnual}=[DataValueAnn,ValueAccuracyAnn,LocalDateTimeAnn,UTCOffsetAnn,...
+DateTimeUTCAnn,SiteIDAnn,VariableIDAnn,OffsetValueAnn,...
+OffsetTypeIDAnn,CensorCodeAnn,QualifierIDAnn,MethodIDAnn,...
+SourceIDAnn,SampleIDAnn,DerivedFromIDAnn,...
+QualityControlLevelIDAnn];
+
+end
+
+%%        
+% connect Matlab workspace with the SQL Server ODM blank Database 
+
+conn = database('OD','sa','Adel2010',...
+                'Vendor','Microsoft SQL Server','Server','localhost',...
+                'AuthType','Server','PortNumber',52158);
+for flsAnnual=1:length(MonthlyFilesData);
 fastinsert(conn,'DataValues',{'DataValue','ValueAccuracy','LocalDateTime','UTCOffset',...
 'DateTimeUTC','SiteID','VariableID','OffsetValue',...
 'OffsetTypeID','CensorCode','QualifierID','MethodID',...
 'SourceID','SampleID','DerivedFromID','QualityControlLevelID'},...
-DataValues{fls})
-
+DataValuesAnn{flsAnnual});
 end
+
