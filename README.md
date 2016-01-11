@@ -13,7 +13,7 @@ cross-tabulated text files into a Microsoft SQL Server ODM Blank Database
  Written and tested by Adel Abdallah   
  Started on June 15 2015   
  Finsihed on Jan 10th 2016   
- estimated time spent: 80 hours of work   
+ estimated time spent: about a month worth of work
 
 ### There are two seprate scripts for discharge time series data.   
 Daily   
