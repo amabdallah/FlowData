@@ -39,6 +39,7 @@ We also would like to be able to query our data for quick analysi."
 
 ### How to use the database?  
 First, attach the database instance you can download here to Microsoft SQL Server. Here is instructions on how to do it 
+https://www.codeplex.com/Download?ProjectName=HydroServer&DownloadId=349185
 
 Then, you can use ODM Tools software to query and visualize the database   
 There are two versions of this software: C# or Python Based. But both are free. The Python one is more recent and should be compatiable with Mac, Windows, and Lunix. 
