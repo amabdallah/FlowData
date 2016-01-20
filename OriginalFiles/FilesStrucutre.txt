@@ -15,7 +15,8 @@
 
 
 	Record 2 is repeated 31 times for each year of input streamflow data.  The sequence of record 1 and record 2 repeated 31 times is repeated for each year of input data.  For more than one year of streamflow data the process is repeated for record 1 and record 2.
- 
+
+------------------------------------------------------------------------------------------------------------------ 
 	Utah Division of Water Resources
 
 	Monthly Streamflow Format
