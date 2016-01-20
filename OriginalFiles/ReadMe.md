@@ -13,4 +13,6 @@ We want to be able to standardize how we keep our data.
 We also would like to be able to query our data for quick analysis."  
 
 ## Files structure and format
-Dave Cole at the Utah Division of Water Resources shared this format that describes how the data is organzied in the text files with Adel Abdallah on a CD on June 16, 2015   
+The format that describes how the data is organzied in the text files was attached to the Monthly streamflow folder
+See here:   
+https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/OriginalFiles/FilesStrucutre.txt
