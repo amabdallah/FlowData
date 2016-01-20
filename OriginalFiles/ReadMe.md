@@ -15,7 +15,6 @@ We also would like to be able to query our data for quick analysis."
 ## Files structure and format
 Dave Cole at the Utah Division of Water Resources shared this format that describes how the data is organzied in the text files with Adel Abdallah on a CD on June 16, 2015   
 
-----------------------------------------------------------------------------------------------------------------
 
 Utah Division of Water Resources
 
@@ -35,7 +34,7 @@ Utah Division of Water Resources
 
 	Record 2 is repeated 31 times for each year of input streamflow data.  The sequence of record 1 and record 2 repeated 31 times is repeated for each year of input data.  For more than one year of streamflow data the process is repeated for record 1 and record 2.
  
-----------------------------------------------------------------------------------------------------------------
+
 	Utah Division of Water Resources
 
 	Monthly Streamflow Format
@@ -53,4 +52,4 @@ Utah Division of Water Resources
 
 
 	Record 2 is repeated for each year of input streamflow data.  For more than one streamflow station the process is repeated for record 1 and record 
-----------------------------------------------------------------------------------------------------------------
+
