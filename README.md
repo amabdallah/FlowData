@@ -1,9 +1,9 @@
 ### UDWR_FlowStorageData
-Automate loading cross-tabulated time series flows data from text files into an ODM database in SQL Server. Then use ODM user interface Tools to query and visualize time series data from one centeral hub. The time series data are for the Utah Division of Water Resources. 
-Written and tested by Adel M. Abdallah, Utah State University  
-Started on June 15, 2015   
-Last updated on Jan 22, 2016   
-Estimated time spent: Over a month worth of work  
+Automate loading cross-tabulated time series flows data from text files into an ODM database in SQL Server. Then use ODM user interface Tools to query and visualize time series data from one centeral hub. The time series data are for the Utah Division of Water Resources.     
+Written and tested by Adel M. Abdallah, Utah State University     
+Started on June 15, 2015      
+Last updat on Jan 22, 2016     
+Estimated time spent: Over a month of work     
 
 **Disclaimer**   
 The Utah Division of Water Resources owns this data.  
