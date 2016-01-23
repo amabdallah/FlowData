@@ -5,6 +5,8 @@ Automate loading cross-tabulated time series flows data from text files into an 
  Matlab script to read, manipulate, and load discharge time series data from 
 cross-tabulated text files into a Microsoft SQL Server ODM Blank Database
 
+<img src="https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/DataLoadingConceptual.JPG" alt="Drawing" style="width: 100px;"/>     
+
 ### Data provided by Craig Miller and Dave Cole at Utah Division of Water Resources      
 
 * 1. Monthly (547 MonthlyStations or text files)   (flow cubic foot per second cfs)
