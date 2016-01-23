@@ -12,11 +12,16 @@ This project is in progress.
 
 ###Summary
 The Matlab script reads, manipulates, and loads discharge time series data from 
-cross-tabulated text files into a Microsoft SQL Server ODM Blank Database. Here is the script    
-https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/Script_Load_Time_Series_Data_Jan22_2016.m
+cross-tabulated text files into a Microsoft SQL Server ODM Blank Database. 
 
-Here is a copy of the populated SQL Server database instance. Please follow the instructions below on how to use it.      
-https://github.com/amabdallah/UDWR_FlowStorageData/raw/master/ODM_SQLServer_FlowData_Jan22_2016.rar
+### Why do we need this script, or to load data into ODM? Purpose?
+Craig Miller mentioned these reaons for loading their text files into a database   
+"at present we have flat files that only have at most 5 digits of accuracy.   
+In models we cannot see changes in systems like the Colorado River from small   
+changes upstream because we just don't have enough accuracy in our data    
+We would also like to have a way of accessing data from different sources    
+through one data hub.  We want to be able to standardize how we keep our data.  
+We also would like to be able to query our data for quick analysi."    
 
 ### Data provided by Craig Miller and Dave Cole at Utah Division of Water Resources      
 Here is the original folders of all the files:
@@ -31,23 +36,18 @@ https://github.com/amabdallah/UDWR_FlowStorageData/tree/master/PreparedFiles
 
 <img src="https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/DataLoadingConceptual.JPG" width= "700">     
 
-
 ###How does the script work?
  1. read each text file: get the name of the station, time range, and data values    
  2. convet the cross-tabulated data values to time series   
  3. add metadata: source, unit, method for each site   
  4. prepare the data and its metadata to a strucutre that matches the ODM database tables    
  5. load metadata, then data values for each site   
+Here is the script    
+https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/Script_Load_Time_Series_Data_Jan22_2016.m
 
-
-### Why do we need this script, or to load data into ODM? Purpose?
-Craig Miller mentioned these reaons for loading their text files into a database   
-"at present we have flat files that only have at most 5 digits of accuracy.   
-In models we cannot see changes in systems like the Colorado River from small   
-changes upstream because we just don't have enough accuracy in our data    
-We would also like to have a way of accessing data from different sources    
-through one data hub.  We want to be able to standardize how we keep our data.  
-We also would like to be able to query our data for quick analysi."    
+#### Result    
+Here is a copy of the populated SQL Server database instance. Please follow the instructions below on how to use it.      
+https://github.com/amabdallah/UDWR_FlowStorageData/raw/master/ODM_SQLServer_FlowData_Jan22_2016.rar
 
 ### How to use the database?  
 First, attach the database instance you can download here to Microsoft SQL Server. Here is instructions on how to do it 
