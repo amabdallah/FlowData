@@ -5,7 +5,7 @@ Automate loading cross-tabulated time series flows data from text files into an 
  Matlab script to read, manipulate, and load discharge time series data from 
 cross-tabulated text files into a Microsoft SQL Server ODM Blank Database
 
-<img src="https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/DataLoadingConceptual.JPG" width= "20">     
+<img src="https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/DataLoadingConceptual.JPG" width= "100">     
 
 
 ### Data provided by Craig Miller and Dave Cole at Utah Division of Water Resources      
