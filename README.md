@@ -6,7 +6,9 @@ Last updated on Jan 22, 2016
 Estimated time spent: Over a month worth of work  
 
 **Disclaimer**   
-The Utah Division of Water Resources own this data. Use the script and data at your own risk. This project is in progress. 
+The Utah Division of Water Resources owns this data.  
+Use the script and data at your own risk.   
+This project is in progress.   
 
 ###Summary
 The Matlab script reads, manipulates, and loads discharge time series data from 
