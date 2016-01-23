@@ -57,7 +57,7 @@ Then, you can use ODM Tools software to query and visualize the database
 There are two versions of this software: C# or Python Based. But both are free. The Python one is more recent and should be compatiable with Mac, Windows, and Lunix. 
 
 Windows C# ODM Tools    
-https://hydroserver.codeplex.com/wikipage?title=ODM%20Tools&referringTitle=Documentation
+https://hydroserver.codeplex.com/downloads/get/352448
 
 Python ODM Tools    
 https://github.com/ODM2/ODMToolsPython
