@@ -14,7 +14,7 @@ This project is in progress.
 The Matlab script reads, manipulates, and loads discharge time series data from 
 cross-tabulated text files into a Microsoft SQL Server ODM Blank Database
 
-## Data provided by Craig Miller and Dave Cole at Utah Division of Water Resources      
+### Data provided by Craig Miller and Dave Cole at Utah Division of Water Resources      
 
 * 1. Stream Flow: Monthly (516 text files)   average? (flow cubic foot per second cfs)
 * 2. Stream Flow: Daily (50 text files)  cumultive Volume (acre feet)   
