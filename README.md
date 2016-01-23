@@ -12,10 +12,18 @@ This project is in progress.
 
 ###Summary
 The Matlab script reads, manipulates, and loads discharge time series data from 
-cross-tabulated text files into a Microsoft SQL Server ODM Blank Database
+cross-tabulated text files into a Microsoft SQL Server ODM Blank Database. Here is the script    
+https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/Script_Load_Time_Series_Data_Jan22_2016.m
+
+Here is a copy of the populated SQL Server database instance. Please follow the instructions below on how to use it.      
+https://github.com/amabdallah/UDWR_FlowStorageData/raw/master/ODM_SQLServer_FlowData_Jan22_2016.rar
 
 ### Data provided by Craig Miller and Dave Cole at Utah Division of Water Resources      
+Here is the original folders of all the files:
+https://github.com/amabdallah/UDWR_FlowStorageData/tree/master/OriginalFiles    
 
+For now, I needed to exclude a few text files that had problomatic issues which made the Matlab script break. The final text files that I used are here 
+https://github.com/amabdallah/UDWR_FlowStorageData/tree/master/PreparedFiles    
 * 1. Stream Flow: Monthly (516 text files)   average? (flow cubic foot per second cfs)
 * 2. Stream Flow: Daily (50 text files)  cumultive Volume (acre feet)   
 * 3. Flow: Monthly (198 text files)  cumultive Volume (acre feet)  
