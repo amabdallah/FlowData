@@ -3,7 +3,7 @@ Automate loading cross-tabulated time series flows data from text files into an 
 Written and tested by Adel M. Abdallah, Utah State University     
 Started on June 15, 2015      
 Last updat on Jan 22, 2016     
-Estimated time spent: Over a month of work     
+Estimated time spent: Over a month of work and lots of dreaming...     
 
 **Disclaimer**   
 The Utah Division of Water Resources owns this data.  
