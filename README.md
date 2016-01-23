@@ -1,4 +1,4 @@
-# UDWR_FlowStorageData
+### UDWR_FlowStorageData
 Automate loading cross-tabulated time series flows data from text files into an ODM database in SQL Server. Then use ODM user interface Tools to query and visualize time series data from one centeral hub. The time series data are for the Utah Division of Water Resources. 
 Written and tested by Adel M. Abdallah, Utah State University  
 Started on June 15, 2015   
@@ -10,7 +10,7 @@ The Utah Division of Water Resources owns this data.
 Use the script and data at your own risk.   
 This project is in progress.   
 
-###Summary
+### Summary
 The Matlab script reads, manipulates, and loads discharge time series data from 
 cross-tabulated text files into a Microsoft SQL Server ODM Blank Database. 
 
@@ -36,7 +36,7 @@ https://github.com/amabdallah/UDWR_FlowStorageData/tree/master/PreparedFiles
 
 <img src="https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/DataLoadingConceptual.JPG" width= "700">     
 
-###How does the script work?
+### How does the script work?
  1. read each text file: get the name of the station, time range, and data values    
  2. convet the cross-tabulated data values to time series   
  3. add metadata: source, unit, method for each site   
@@ -45,7 +45,7 @@ https://github.com/amabdallah/UDWR_FlowStorageData/tree/master/PreparedFiles
 Here is the script    
 https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/Script_Load_Time_Series_Data_Jan22_2016.m
 
-#### Result    
+### Result    
 Here is a copy of the populated SQL Server database instance. Please follow the instructions below on how to use it.      
 https://github.com/amabdallah/UDWR_FlowStorageData/raw/master/ODM_SQLServer_FlowData_Jan22_2016.rar
 
