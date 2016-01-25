@@ -10,6 +10,12 @@ The Utah Division of Water Resources owns this data.
 Use the script and data at your own risk.   
 This project is in progress.   
 
+### The Observation Data Model (ODM)   
+ODM is a data model for the storage and retrieval of hydrologic observations in a relational database. ODM has become like the standard to orgaize any point time series data (e.g., snow, rain, discharge, weather, etc). Here I used the version ODM 1.1.1 which you can find lots of details about it at this link below. To make it simple, this schematic below shows the basic table that you need to populate in the database for this specific data. The rest of tables could be used for more detailed metadata of **real-time** data. 
+https://hydroserver.codeplex.com/wikipage?title=Observations%20Data%20Model&referringTitle=Documentation
+
+<img src="https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/ODM.jpg" width= "700">     
+
 ### Why do we need this script, or to load data into ODM? Purpose?
 Craig Miller mentioned these reaons for loading their text files into a database
 "at present we have flat files that only have at most 5 digits of accuracy.
