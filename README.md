@@ -45,7 +45,8 @@ https://github.com/amabdallah/UDWR_FlowStorageData/tree/master/PreparedFiles
  2. convert the cross-tabulated data values to time series   
  3. add metadata: source, unit, method for each site   
  4. prepare the data and its metadata to a structure that matches the ODM database tables    
- 5. load metadata, then data values for each site   
+ 5. load metadata, then data values for each site into the ODM database  
+ 
 Here is the script      
 https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/Script_Load_Time_Series_Data_Jan22_2016.m
 <img src="https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/DataLoadingConceptual.JPG" width= "700">     
