@@ -2,7 +2,7 @@
 Automate loading cross-tabulated time series flows data from text files into an ODM database in SQL Server. Then use ODM user interface Tools to query and visualize time series data from one centeral hub. The time series data are for the Utah Division of Water Resources.     
 Written and tested by Adel M. Abdallah, Utah State University     
 Started on June 15, 2015      
-Last updat on Jan 22, 2016     
+Last update on Jan 22, 2016     
 Estimated time spent: Over a month of work and lots of dreaming...     
 
 **Disclaimer**   
@@ -11,13 +11,14 @@ Use the script and data at your own risk.
 This project is in progress.   
 
 ### The Observation Data Model (ODM)   
-ODM is a data model for the storage and retrieval of hydrologic observations in a relational database. ODM has become like the standard to orgaize any point time series data (e.g., snow, rain, discharge, weather, etc). Here I used the version ODM 1.1.1 which you can find lots of details about it at this link below. To make it simple, this schematic below shows the basic table that you need to populate in the database for this specific data. The rest of tables could be used for more detailed metadata of **real-time** data. 
+ODM is a data model for the storage and retrieval of hydrologic observations in a relational database. ODM has become like the standard to organize any point time series data (e.g., snow, rain, discharge, weather, etc).   
+Here I used the version ODM 1.1.1 which you can find lots of details about it at this link below. To make it simple, this schematic below highlights in dashed blue boxes the basic tables that you need to populate in the database for this specific data. The rest of tables could be used for more detailed metadata of **real-time** data. 
 https://hydroserver.codeplex.com/wikipage?title=Observations%20Data%20Model&referringTitle=Documentation
 
 <img src="https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/ODM.jpg" width= "700">     
 
 ### Why do we need this script, or to load data into ODM? Purpose?
-Craig Miller mentioned these reaons for loading their text files into a database
+Craig Miller mentioned these reasons for loading their text files into a database
 "at present we have flat files that only have at most 5 digits of accuracy.
 In models we cannot see changes in systems like the Colorado River from small
 changes upstream because we just don't have enough accuracy in our data
@@ -30,18 +31,18 @@ We also would like to be able to query our data for quick analysis."
 Here is the original folders of all the files:
 https://github.com/amabdallah/UDWR_FlowStorageData/tree/master/OriginalFiles    
 
-For now, I needed to exclude a few text files that had problomatic issues which made the Matlab script break. The final text files that I used are here 
+For now, I needed to exclude a few text files that had problematic issues which made the Matlab script break. The final text files that I used are here 
 https://github.com/amabdallah/UDWR_FlowStorageData/tree/master/PreparedFiles    
 * 1. Stream Flow: Monthly (516 text files)   average? (flow cubic foot per second cfs)
-* 2. Stream Flow: Daily (50 text files)  cumultive Volume (acre feet)   
-* 3. Flow: Monthly (198 text files)  cumultive Volume (acre feet)  
-* 4. OutPut: Monthly (129 text files)  cumultive Volume (acre feet)  
+* 2. Stream Flow: Daily (50 text files)  cumulative Volume (acre feet)   
+* 3. Flow: Monthly (198 text files)  cumulative Volume (acre feet)  
+* 4. OutPut: Monthly (129 text files)  cumulative Volume (acre feet)  
 
 ### How does the script work?
  1. read each text file: get the name of the station, time range, and data values    
- 2. convet the cross-tabulated data values to time series   
+ 2. convert the cross-tabulated data values to time series   
  3. add metadata: source, unit, method for each site   
- 4. prepare the data and its metadata to a strucutre that matches the ODM database tables    
+ 4. prepare the data and its metadata to a structure that matches the ODM database tables    
  5. load metadata, then data values for each site   
 Here is the script      
 https://github.com/amabdallah/UDWR_FlowStorageData/blob/master/Script_Load_Time_Series_Data_Jan22_2016.m
@@ -56,7 +57,7 @@ First, attach the database instance you can download here to Microsoft SQL Serve
 https://www.codeplex.com/Download?ProjectName=HydroServer&DownloadId=349185
 
 Then, you can use ODM Tools software to query and visualize the database   
-There are two versions of this software: C# or Python Based. But both are free. The Python one is more recent and should be compatiable with Mac, Windows, and Lunix. 
+There are two versions of this software: C# or Python Based. But both are free. The Python one is more recent and should be compatible with Mac, Windows, and Lunix. 
 
 Windows C# ODM Tools    
 https://hydroserver.codeplex.com/downloads/get/352448
