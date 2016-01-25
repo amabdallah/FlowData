@@ -11,7 +11,7 @@ Use the script and data at your own risk.
 This project is in progress.   
 
 ### The Observation Data Model (ODM)   
-ODM is a data model for the storage and retrieval of hydrologic observations in a relational database. ODM has become like the standard to organize any point time series data (e.g., snow, rain, discharge, weather, etc).   
+The ODM is a data model for the storage and retrieval of hydrologic observations in a relational database. ODM has become like the standard to organize any point time series data (e.g., snow, rain, discharge, weather, etc).   
 Here I used the version ODM 1.1.1 which you can find lots of details about it at this link below. To make it simple, this schematic below highlights in dashed blue boxes the basic tables that you need to populate in the database for this specific data. The rest of tables could be used for more detailed metadata of **real-time** data. 
 https://hydroserver.codeplex.com/wikipage?title=Observations%20Data%20Model&referringTitle=Documentation
 
@@ -26,6 +26,8 @@ changes upstream because we just don't have enough accuracy in our data
 through one data hub.**   
 We want to be able to standardize how we keep our data.  
 We also would like to be able to query our data for quick analysis."  
+
+The ODM has successfully been used worldwide to organize time series data and there are several software tools that have been developed to load data, query, and visualize its selected data. So this is why I used ODM here. 
 
 ### Data provided by Craig Miller and Dave Cole at Utah Division of Water Resources      
 Here is the original folders of all the files:
